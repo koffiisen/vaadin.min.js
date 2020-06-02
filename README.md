@@ -20,6 +20,8 @@ This minified version also include [webcomponentsjs](https://cdnjs.com/libraries
 </vaadin-button>
 ````
 
+#### [Demo](https://koffiisen.github.io/vaadin.min.js/)
+
 #### See all documentation here :
  * [Vaadin documentation - HTML](https://vaadin.com/components/vaadin-checkbox)
 ### Vaadin :
