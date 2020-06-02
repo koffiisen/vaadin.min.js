@@ -7,82 +7,64 @@
           content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1,
           user-scalable=no, minimal-ui, viewport-fit=cover">
     <link rel="icon" type="image/png" sizes="32x32" href="https://vaadin.com/favicon-16x16.png">
+    <script src="lib/js-splash-2.0.min.js"></script>
+
 </head>
-<body>
+<body style="background: rgba(0, 0, 0, 0.9);">
 
-<iron-icon icon="vaadin:vaadin-h"></iron-icon>
+<div id="demo" style="visibility: hidden">
 
-<vaadin-radio-group label="Label" theme="vertical">
-    <vaadin-radio-button checked>Option one</vaadin-radio-button>
-    <vaadin-radio-button>Option two</vaadin-radio-button>
-    <vaadin-radio-button>Option three</vaadin-radio-button>
-</vaadin-radio-group>
+    <vaadin-radio-group label="Label" theme="vertical">
+        <vaadin-radio-button checked>Option one</vaadin-radio-button>
+        <vaadin-radio-button>Option two</vaadin-radio-button>
+        <vaadin-radio-button>Option three</vaadin-radio-button>
+    </vaadin-radio-group>
 
-<vaadin-button>Button</vaadin-button>
-clicked <span>0</span> times.
-<script>
-    customElements.whenDefined('vaadin-button').then(function () {
-        let i = 0;
-        const button = document.querySelector('vaadin-button');
-        button.addEventListener('click', function () {
-            button.nextElementSibling.textContent = ++i;
+    <vaadin-button>Button</vaadin-button>
+    clicked <span>0</span> times.
+    <script>
+        customElements.whenDefined('vaadin-button').then(function () {
+            let i = 0;
+            const button = document.querySelector('vaadin-button');
+            button.addEventListener('click', function () {
+                button.nextElementSibling.textContent = ++i;
+            });
         });
-    });
-</script>
+    </script>
 
-<vaadin-button>
-    <iron-icon icon="lumo:edit" slot="prefix"></iron-icon>
-    Edit
-</vaadin-button>
-
-<vaadin-button>
-    <iron-icon icon="lumo:arrow-right" slot="suffix"></iron-icon>
-    Next
-</vaadin-button>
-
-<vaadin-chart type="area" title="Historic and Estimated Worldwide Population Growth by Region"
-              subtitle="Source: Wikipedia.org" categories="[1750, 1800, 1850, 1900, 1950, 1999, 2050]" stacking="normal"
-              no-legend tooltip>
-    <vaadin-chart-series title="Asia" values="[502, 635, 809, 947, 1402, 3634, 5268]" unit="Millions">
-    </vaadin-chart-series>
-    <vaadin-chart-series title="Africa" values="[106, 107, 111, 133, 221, 767, 1766]" unit="Millions">
-    </vaadin-chart-series>
-    <vaadin-chart-series title="Europe" values="[163, 203, 276, 408, 547, 729, 628]" unit="Millions">
-    </vaadin-chart-series>
-    <vaadin-chart-series title="America" values="[18, 31, 54, 156, 339, 818, 1201]" unit="Millions">
-    </vaadin-chart-series>
-    <vaadin-chart-series title="Oceania" values="[2, 2, 2, 6, 13, 30, 46]" unit="Millions">
-    </vaadin-chart-series>
-</vaadin-chart>
-
-<vaadin-button id="open">Open dialog</vaadin-button>
-<vaadin-confirm-dialog cancel header="Unsaved changes">
-    <p id="description">Do you want to <b>save</b> or <b>discard</b> your changes before navigating away?</p>
-    <vaadin-button id="save" slot="confirm-button" theme="primary" aria-describedby="description">
-        <iron-icon icon="vaadin:envelope-open" slot="prefix"></iron-icon>
-        Save
+    <vaadin-button>
+        <iron-icon icon="lumo:edit" slot="prefix"></iron-icon>
+        Edit
     </vaadin-button>
-    <vaadin-button id="discard" slot="reject-button" theme="error tertiary">
-        <iron-icon icon="vaadin:trash" slot="prefix"></iron-icon>
-        Discard
+
+    <vaadin-button>
+        <iron-icon icon="lumo:arrow-right" slot="suffix"></iron-icon>
+        Next
     </vaadin-button>
-</vaadin-confirm-dialog>
-<vaadin-board>
-    <vaadin-board-row>
-        <div class="cell1">This could be chart 1</div>
-        <div class="cell2">This could be chart 2</div>
-        <div class="cell3">This could be chart 3</div>
-        <div class="cell4">This could be chart 4</div>
-    </vaadin-board-row>
-</vaadin-board>
+</div>
 
-<vaadin-crud></vaadin-crud>
-<vaadin-rich-text-editor style="height: 300px;"></vaadin-rich-text-editor>
-<vaadin-cookie-consent></vaadin-cookie-consent>
-
-<span id="status"></span>
 <script src="vaadin.min.js"></script>
 <script>
+    window.onload = function () {
+        var splash = new Splash({background: 'rgba(0, 0, 0, 0.9)'}, {
+            use: true,
+            start: FancyAnimation.moveIn,
+            end: FancyAnimation.rubberBand
+        });
+
+        var indeterminate = () => {
+            splash.fromHtml('<strong>Vaadin Demo --- </strong><small style="color: blue">Loading ...</small>')
+        };
+        splash.indeterminateLoad(indeterminate, function (callback) {
+            var stop = callback;
+            document.body.style.background = "#fff";
+            setTimeout(function () {
+                console.log("stop execute");
+                stop();
+                document.querySelector("#demo").style.visibility = "visible";
+            }, 7000);
+        });
+    };
     Vaadin.developmentMode = true;
     window.addEventListener('WebComponentsReady', function () {
         var dialog = document.querySelector('vaadin-confirm-dialog');
